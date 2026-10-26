@@ -8,6 +8,7 @@ import { StudentInfo, AppSection, ArenaHistoryRecord } from '../types';
 import { MascotBeSo } from './MascotBeSo';
 import { soundManager } from '../utils/sound';
 import { STUDENT_AVATARS } from '../data/badgeData';
+import { formatStudyTime } from '../services/googleSyncService';
 
 interface HomeScreenProps {
   student: StudentInfo;
@@ -21,6 +22,9 @@ interface HomeScreenProps {
   onOpenBadgesModal: () => void;
   arenaHistory?: ArenaHistoryRecord[];
   onOpenCertificate?: () => void;
+  studyDurationSeconds?: number;
+  onOpenLeaderboard?: () => void;
+  onOpenProfile?: () => void;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({
@@ -34,7 +38,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   arenaBestScore,
   onOpenBadgesModal,
   arenaHistory = [],
-  onOpenCertificate
+  onOpenCertificate,
+  studyDurationSeconds = 0,
+  onOpenLeaderboard,
+  onOpenProfile
 }) => {
   const avatar = STUDENT_AVATARS.find((a) => a.id === student.avatarId) || STUDENT_AVATARS[0];
 
@@ -74,6 +81,33 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <span className="bg-white/25 px-2.5 py-1 rounded-xl text-xs font-bold">
                 Trường: {student.school}
               </span>
+              <span className="bg-white/25 px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-yellow-300" />
+                Thời lượng học: {formatStudyTime(studyDurationSeconds)}
+              </span>
+            </div>
+
+            {/* Quick Access to Leaderboard & Profile */}
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 pt-3">
+              {onOpenLeaderboard && (
+                <button
+                  type="button"
+                  onClick={onOpenLeaderboard}
+                  className="px-4 py-2 bg-gradient-to-r from-amber-400 to-yellow-400 hover:from-amber-500 hover:to-yellow-500 text-slate-900 font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5"
+                >
+                  <Trophy className="w-4 h-4 text-amber-900 fill-amber-900" />
+                  <span>BẢNG XẾP HẠNG TOÀN QUỐC</span>
+                </button>
+              )}
+              {onOpenProfile && (
+                <button
+                  type="button"
+                  onClick={onOpenProfile}
+                  className="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-bold text-xs sm:text-sm rounded-xl border border-white/30 transition-all active:scale-95 flex items-center gap-1.5"
+                >
+                  <span>📊 Xem Hồ Sơ & Lịch Sử Hoạt Động</span>
+                </button>
+              )}
             </div>
           </div>
 
@@ -261,6 +295,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                   <span>Mở Kho Huy Hiệu</span>
                 </button>
+
+                {onOpenProfile && (
+                  <button
+                    type="button"
+                    onClick={onOpenProfile}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-black text-xs border border-emerald-200 transition-colors cursor-pointer shadow-xs"
+                  >
+                    <span>📊 Xem Chi Tiết Chỉ Số</span>
+                  </button>
+                )}
               </div>
             </div>
 

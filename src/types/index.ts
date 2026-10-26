@@ -64,6 +64,31 @@ export interface ArenaHistoryRecord {
   rankTitle: string;
 }
 
+export interface StudentActivityLog {
+  id: string;
+  timestamp: string;
+  date?: string;
+  action: string;
+  detail: string;
+  type: 'login' | 'learning' | 'mindmap' | 'practice' | 'arena';
+  scoreChange?: number;
+}
+
+export interface LeaderboardEntry {
+  rank?: number;
+  fullName: string;
+  grade: string;
+  school: string;
+  avatarId?: string;
+  totalScore: number;
+  arenaScore: number;
+  studyMinutes: number;
+  badgeCount: number;
+  rankTitle: string;
+  lastActive: string;
+  isCurrentStudent?: boolean;
+}
+
 export interface AppState {
   student: StudentInfo | null;
   currentSection: AppSection;
