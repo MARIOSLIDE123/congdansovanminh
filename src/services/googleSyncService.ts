@@ -1,11 +1,14 @@
 import { StudentInfo, ArenaHistoryRecord, StudentActivityLog, LeaderboardEntry } from '../types';
 
-// Default / fallback URL can be set via env or localStorage
+// Production Google Apps Script Web App URL
+export const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz1ddpLs9M2QKfC8OiwyYTnwOU-uoTjhAFJbS6pwxZQXPrzRKb_3E2Cdb76-g3B21Em7A/exec';
+
+// Get active Apps Script URL (prioritizes localStorage, then env, then default production URL)
 export const getAppsScriptUrl = (): string => {
   try {
-    return localStorage.getItem('google_apps_script_url') || import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL || '';
+    return localStorage.getItem('google_apps_script_url') || import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL || DEFAULT_APPS_SCRIPT_URL;
   } catch {
-    return '';
+    return DEFAULT_APPS_SCRIPT_URL;
   }
 };
 
